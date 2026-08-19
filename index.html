@@ -9,32 +9,46 @@
 <div id="output">Loading...</div>
 
 <script>
-// ---- Command registry: add new commands here without touching the logic below ----
 const COMMANDS = {
   'C': {
     copy: true,
-    render: (text) => text + "Copied to Clipboard"
+    render: (text) => text + "
+
+Copied to Clipboard"
   },
- 'P': {
-    copy: false,
-    render: (text) => text
-  }, 
   'L': {
     copy: false,
-    render: (text) => "Please Find Here my contact information for my bag:" + text
+    render: (text) => "Please Find Here my contact information for my bag:
+" + text
   },
   'H': {
     copy: true,
-    render: (text) => "Here is the Hash:" + text
+    render: (text) => "Here is the Hash:
+" + text
+  },
+  'P': {
+    copy: true,
+    render: (text) => text
   }
-  // Example of adding a new command:
-  // 'X': { copy: false, render: (text) => "Custom prefix:
-" + text }
 };
 
-async function handleHash() {
-  const raw = decodeURIComponent(location.hash.slice(1));
+function copyToClipboardSafely(text) {
+  if (!navigator.clipboard || !navigator.clipboard.writeText) {
+    return;
+  }
+  try {
+    const copyPromise = navigator.clipboard.writeText(text);
+    if (copyPromise && typeof copyPromise.catch === "function") {
+      copyPromise.catch((err) => console.warn("Clipboard copy failed:", err));
+    }
+  } catch (err) {
+    console.warn("Clipboard copy failed:", err);
+  }
+}
+
+function handleHash() {
   const outputEl = document.getElementById('output');
+  const raw = decodeURIComponent(location.hash.slice(1));
 
   if (!raw) {
     outputEl.textContent = "";
@@ -46,20 +60,16 @@ async function handleHash() {
   const cmd = COMMANDS[cmdChar];
 
   if (!cmd) {
-    // Unknown or missing command: show the whole thing raw
     outputEl.textContent = raw;
     return;
   }
 
-  if (cmd.copy) {
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch (err) {
-      console.warn("Clipboard copy failed:", err);
-    }
-  }
-
+  // Render immediately, never block on the clipboard call.
   outputEl.textContent = cmd.render(text);
+
+  if (cmd.copy) {
+    copyToClipboardSafely(text);
+  }
 }
 
 handleHash();
