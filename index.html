@@ -1,7 +1,69 @@
 <!DOCTYPE html>
-<html><body style="font-size:2em;font-family:sans-serif;padding:2em">
-<div id="t"></div>
+<html>
+<head>
+<meta charset="utf-8">
+<title>NFC Viewer</title>
+</head>
+<body style="font-size:1.6em;font-family:sans-serif;padding:2em;white-space:pre-wrap">
+
+<div id="output">Loading...</div>
+
 <script>
-document.getElementById('t').textContent = decodeURIComponent(location.hash.slice(1));
+// ---- Command registry: add new commands here without touching the logic below ----
+const COMMANDS = {
+  'C': {
+    copy: true,
+    render: (text) => text + "
+
+Copied to Clipboard"
+  },
+  'L': {
+    copy: false,
+    render: (text) => "Please Find Here my contact information for my bag:
+" + text
+  },
+  'H': {
+    copy: true,
+    render: (text) => "Here is the Hash:
+" + text
+  }
+  // Example of adding a new command:
+  // 'X': { copy: false, render: (text) => "Custom prefix:
+" + text }
+};
+
+async function handleHash() {
+  const raw = decodeURIComponent(location.hash.slice(1));
+  const outputEl = document.getElementById('output');
+
+  if (!raw) {
+    outputEl.textContent = "";
+    return;
+  }
+
+  const cmdChar = raw.charAt(0);
+  const text = raw.slice(1);
+  const cmd = COMMANDS[cmdChar];
+
+  if (!cmd) {
+    // Unknown or missing command: show the whole thing raw
+    outputEl.textContent = raw;
+    return;
+  }
+
+  if (cmd.copy) {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (err) {
+      console.warn("Clipboard copy failed:", err);
+    }
+  }
+
+  outputEl.textContent = cmd.render(text);
+}
+
+handleHash();
 </script>
-</body></html>
+
+</body>
+</html>
