@@ -6,7 +6,7 @@
 </head>
 <body style="font-size:1.6em;font-family:sans-serif;padding:2em;white-space:pre-wrap">
 
-<div id="output">Loading...</div>
+<div id="nfctag">Showing Tag </div>
 
 <script>
 const COMMANDS = {
@@ -43,7 +43,7 @@ function copyToClipboardSafely(text) {
 }
 
 function handleHash() {
-  const outputEl = document.getElementById('output');
+  const outputEl = document.getElementById('nfctag');
   const raw = decodeURIComponent(location.hash.slice(1));
 
   if (!raw) {
