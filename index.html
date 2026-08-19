@@ -11,11 +11,11 @@
 const COMMANDS = {
   'C': {
     copy: true,
-    render: (text) => text + "%0ACopied to Clipboard"
+    render: (text) => text + "\n\nCopied to Clipboard"
   },
   'L': {
     copy: false,
-    render: (text) => "Please Find Here my contact information for my bag:%0A" + text
+    render: (text) => "Please Find Here my contact information for my bag:\n\n" + text
   },
   'P': {
     copy: false,
@@ -23,7 +23,7 @@ const COMMANDS = {
   },
   'H': {
     copy: true,
-    render: (text) => "Here is the Hash:%0A" + text
+    render: (text) => "Here is the Hash:\n\n" + text
   }
 };
 
