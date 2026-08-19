@@ -40,7 +40,7 @@ function copyToClipboardSafely(text) {
 function handleHash() {
   const outputEl = document.getElementById('nfctag');
   const raw = decodeURIComponent(location.hash.slice(1));
-  document.getElementById('nfctag').textContent=raw
+  document.getElementById('nfctag').textContent=decodeURIComponent(location.hash.slice(1))
   if (!raw) {
     outputEl.textContent = " Something Is Wrong...";
     return;
