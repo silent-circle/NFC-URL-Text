@@ -19,8 +19,7 @@ const COMMANDS = {
   },
   'H': {
     copy: true,
-    render: (text) => "Here is the Hash:
-" + text
+    render: (text) => "Here is the Hash:" + text
   }
 };
 
@@ -41,7 +40,7 @@ function copyToClipboardSafely(text) {
 function handleHash() {
   const outputEl = document.getElementById('nfctag');
   const raw = decodeURIComponent(location.hash.slice(1));
-
+  document.getElementById('nfctag').textContent=raw
   if (!raw) {
     outputEl.textContent = "";
     return;
