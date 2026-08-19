@@ -42,7 +42,7 @@ function handleHash() {
   const raw = decodeURIComponent(location.hash.slice(1));
   document.getElementById('nfctag').textContent=raw
   if (!raw) {
-    outputEl.textContent = "";
+    outputEl.textContent = " Something Is Wrong...";
     return;
   }
 
