@@ -11,18 +11,22 @@
 <script>
 const COMMANDS = {
   'C': {
+    vzip: true,
     copy: true,
     render: (text) => text + "\n\nCopied to Clipboard"
   },
   'L': {
+    vzip:true,
     copy: false,
     render: (text) => "Please Find Here my contact information for my bag:\n\n" + text
   },
   'P': {
+    vzip:true,
     copy: false,
     render: (text) =>  text
   },
   'H': {
+    vzip: false,
     copy: true,
     render: (text) => "Here is the Hash:\n\n" + text
   }
@@ -59,8 +63,12 @@ function handleHash() {
   }
 
   // Render immediately, never block on the clipboard call.
-  outputEl.textContent = cmd.render(text);
-
+  if (cmd.vzip) {
+    const utext=text.replaceAll('_',' ')
+    outputEl.textContent = cmd.render(utext);
+  } else {
+    outputEl.textContent = cmd.render(text);
+  }
   if (cmd.copy) {
     copyToClipboardSafely(text);
   }
